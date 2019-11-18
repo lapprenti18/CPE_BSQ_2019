@@ -13,22 +13,45 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
-int fs_open_file(char const *filepath)
+int    Nb_line(char **av)
 {
-    int fd = open(filepath, O_RDONLY);
+    char *buffer = malloc(sizeof(char) * 9);
+    int fd = open(av[1], O_RDONLY);
+    int x = 0;
 
-    if (fd <= 0) {
-        my_putstr("FAILURE\n");
-    } else
-        my_putstr("SUCCESS\n");
-    return (fd);
+    read(fd, buffer, 8);
+    for (; buffer[x] <= '9' && buffer[x] >= '0'; x += 1);
+    buffer[x + 1] = '\0';
+    if (fd == -1)
+        return 84;
+    close(fd);
+    return (my_getnbr(buffer));
 }
 
-int main(int ac, char **av)
+int    Nb_colone(char **av)
 {
-    int res = fs_open_file(av[1]);
+    char *buffer = malloc(sizeof(char) * 10006);
+    int fd = open(av[1], O_RDONLY);
+    int x = 0;
+    int a = 0;
 
-    if (res = -1)
+    read(fd, buffer, 10006);
+    for (; buffer[x] != '\n'; x += 1);
+    x += 1;
+    for (; buffer[x] == '.' || buffer[x] == 'o'; x += 1)
+        a += 1;
+    if (fd == -1)
         return 84;
-    return (res);
+    close(fd);
+    free(buffer);
+    return (a);
+}
+
+int    main(int ac, char **av)
+{
+    int nb_line = Nb_line(av);
+    int nb_colone = Nb_colone(av);
+    char **tab = malloc(sizeof(char) * (nb_line * nb_colone));
+
+    return (0);
 }
