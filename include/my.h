@@ -8,6 +8,14 @@
 #ifndef MY_H_
 #define MY_H_
 
+typedef struct square_s
+{
+    int x;
+    int y;
+    int size;
+}square_t;
+
+
 int my_compute_power_rec(int nb, int p);
 int my_compute_square_root(int nb);
 int my_find_prime_sup(int nb);

@@ -7,7 +7,7 @@
 
 SRC	=	*.c	\
 
-NAME	=	fs_open_file
+NAME	=	bsq
 
 OBJ	=	libmy.a
 
