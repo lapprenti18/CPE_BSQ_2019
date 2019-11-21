@@ -30,12 +30,15 @@ int    height(char **av)
 
 int    widht(char **av)
 {
-    char *buffer = malloc(sizeof(char) * 10006);
+    struct stat size_buff;
+    char *buffer;
     int fd = open(av[1], O_RDONLY);
     int x = 0;
     int a = 0;
 
-    read(fd, buffer, 10006);
+    stat(av[1], &size_buff);
+    buffer = malloc(sizeof(char) * size_buff.st_size + 1);
+    read(fd, buffer, size_buff.st_size + 1);
     for (; buffer[x] != '\n'; x += 1);
     x += 1;
     for (; buffer[x] == '.' || buffer[x] == 'o'; x += 1)
@@ -150,7 +153,7 @@ void    my_find_biggest(char **tab, square_t *square, int cursor)
     int repere = 0;
     int size = 0;
 
-    while (tab[cursor][repere]) {
+    for (int repere = 0; tab[cursor][repere]; repere += 1) {
         size = 0;
         if (tab[cursor][repere] == '.' && tab[cursor + 1])
             size = my_calc_size(tab, cursor + 1, repere + 1);
@@ -159,8 +162,23 @@ void    my_find_biggest(char **tab, square_t *square, int cursor)
             square->x = repere;
             square->y = cursor;
         }
-        repere += 1;
     }
+}
+
+char    **my_print_square(square_t square, char **tab)
+{
+    int y = square.y;
+    int x = square.x;
+
+    while (y != square.y + square.size) {
+        while (x != square.x + square.size) {
+            tab[y][x] = 'x';
+            x += 1;
+        }
+    y += 1;
+    x = square.x;
+    }
+    return (tab);
 }
 
 int    main(int ac, char **av)
@@ -169,18 +187,17 @@ int    main(int ac, char **av)
     int nb_colone = widht(av);
     char *map = fill(av);
     char **tab = my_str_to_word_array(map);
-    for (int z = 0; z < nb_line; z += 1)
-        printf("tab[%d] = %s \n", z,tab[z]);
     int a = 0;
     int b = 0;
     square_t square;
 
     square.size = 0;
-    while (tab[a] != NULL) {
+    for (int a = 0; tab[a] != NULL; a += 1)
         my_find_biggest(tab, &square, a);
-        a += 1;
-    }
-
+    tab = my_print_square(square, tab);
+    for (int z = 0; z < nb_line; z += 1)
+        printf("%s\n",tab[z]);
+    //printf ("X = %d Y = %d size = %d\n", square.x, square.y, square.size);
     for (int z = 0; z < nb_line; z += 1)
         free(tab[z]);
     free(tab);
