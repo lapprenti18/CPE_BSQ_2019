@@ -121,7 +121,8 @@ char    *fill(char **av)
 int    size_upgrade(char **tab, int cursor, int repere, int size)
 {
     while (size > 0) {
-        if (tab[cursor][repere - size] == '.' && tab[cursor - size][repere] == '.')
+        if (tab[cursor][repere - size] == '.'
+        && tab[cursor - size][repere] == '.')
             size -= 1;
         else
             return 1;
@@ -181,7 +182,15 @@ char    **my_print_square(square_t square, char **tab)
     return (tab);
 }
 
-int    main(int ac, char **av)
+void    print_table(int nb_colone, int nb_line, char **tab)
+{
+        for (int z = 0; z < nb_line; z += 1) {
+        write(1, tab[z], nb_colone);
+        write(1, "\n", 1);
+    }
+}
+
+void    main_bsq(char **av)
 {
     int nb_line = height(av);
     int nb_colone = widht(av);
@@ -195,12 +204,19 @@ int    main(int ac, char **av)
     for (int a = 0; tab[a] != NULL; a += 1)
         my_find_biggest(tab, &square, a);
     tab = my_print_square(square, tab);
-    for (int z = 0; z < nb_line; z += 1)
-        printf("%s\n",tab[z]);
-    //printf ("X = %d Y = %d size = %d\n", square.x, square.y, square.size);
+    print_table(nb_colone, nb_line, tab);
     for (int z = 0; z < nb_line; z += 1)
         free(tab[z]);
     free(tab);
     free(map);
+}
+
+int    main(int ac, char **av)
+{
+    struct stat size_buff;
+
+    if (ac != 2)
+        return 84;
+    main_bsq(av);
     return (0);
 }
