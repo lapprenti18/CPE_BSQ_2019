@@ -27,9 +27,3 @@ char    *my_strcapitalize(char *str)
     }
     return (str);
 }
-
-int main(void)
-{
-    char str[]  = "hello world how are you?";
-    printf("%s", my_strcapitalize(str));
-}

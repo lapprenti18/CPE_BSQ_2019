@@ -1,38 +1,27 @@
-
 /*
 ** EPITECH PROJECT, 2019
-** get_nbr
+** PSU_my_printf_2019
 ** File description:
-** getnbr
+** my_getnbr.c
 */
 
-int    my_getnbr(char const *str)
+int my_getnbr(char *str)
 {
-    int moin = 0;
-    int a = 0;
-    int b =  0;
-    int c = 0;
-    int d = 1;
+int i;
+int neg;
+int n;
 
-    while (str[a] == '-' || str[a] == '+') {
-        if (str[a] == '-')
-            moin++;
-        a++;
+    neg = 1;
+    i = 0;
+    while (str[i] != '\0' && (str[i] == '+' || str[i] == '-')) {
+        if (str[i] == '-')
+            neg = neg * -1;
+    i++;
     }
-    while (str[a] != '\0' && str[a] >= '0' && str[a] <= '9') {
-        a++;
-        b++;
+    n = 0;
+    while (str[i] >= 48 && str[i] <= 57) {
+        n = (n * 10) + str[i] - 48;
+        i++;
     }
-    a--;
-    while (b > 0 && str[a] >= '0' && str[a] <= '9') {
-        c = c + (str[a] - 48) * d;
-        d = d * 10;
-        b--;
-        a--;
-    }
-    if (c < 0)
-        return (0);
-    if (moin %2 != 0)
-        c = c * (-1);
-    return (c);
+    return (n * neg);
 }

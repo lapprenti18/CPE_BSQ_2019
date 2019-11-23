@@ -22,8 +22,6 @@ int    height(char **av)
     read(fd, buffer, 8);
     for (; buffer[x] <= '9' && buffer[x] >= '0'; x += 1);
     buffer[x + 1] = '\0';
-    if (fd == -1)
-        return 84;
     close(fd);
     return (my_getnbr(buffer));
 }
@@ -43,8 +41,6 @@ int    widht(char **av)
     x += 1;
     for (; buffer[x] == '.' || buffer[x] == 'o'; x += 1)
         a += 1;
-    if (fd == -1)
-        return 84;
     close(fd);
     free(buffer);
     return (a);
@@ -190,6 +186,16 @@ void    print_table(int nb_colone, int nb_line, char **tab)
     }
 }
 
+int    error_less_line(char *map)
+{
+    int b = 0;
+
+    for (int a = 0; map[a]; a += 1)
+        if (map[a] == '\n')
+            b += 1;
+    return (b - 1);
+}
+
 void    main_bsq(char **av)
 {
     int nb_line = height(av);
@@ -199,7 +205,10 @@ void    main_bsq(char **av)
     int a = 0;
     int b = 0;
     square_t square;
+    int error = error_less_line(map);
 
+    if (error != nb_line)
+        exit (84);
     square.size = 0;
     for (int a = 0; tab[a] != NULL; a += 1)
         my_find_biggest(tab, &square, a);
@@ -213,9 +222,11 @@ void    main_bsq(char **av)
 
 int    main(int ac, char **av)
 {
+    int fd = open(av[1], O_RDONLY);
     struct stat size_buff;
 
-    if (ac != 2)
+    stat(av[1], &size_buff);
+    if (fd == -1 || size_buff.st_size == 0 || ac != 2)
         return 84;
     main_bsq(av);
     return (0);
