@@ -62,38 +62,38 @@ int    is_alpha(char c)
     return (c == '.') || (c >= 'o') && (c != '\0');
 }
 
-char    **my_str_to_word_array(char *str)
+char    **fill_tab(char **tab, char *str, int t)
 {
-    char **tab;
-    int t = nb_word(str);
-    int repere = 0;
     int i = 0;
     int e = 0;
     int x;
 
-    tab = malloc(sizeof(char *) * (t + 1));
-    tab[t - 1] = NULL;
-    if (str[e] == '\0')
-        return (NULL);
     for (int c = 0; c < t ; c++)
     {
         x = 0;
-        while (!is_alpha(str[e])) {
+        for (; !is_alpha(str[e]); i += 1)
             e = e + 1;
-            i = i + 1;
-        }
-        while (is_alpha(str[e])) {
-            e = e + 1;
-        }
+        for (; is_alpha(str[e]); e += 1);
         tab[c] = malloc(sizeof(char) * (e - i + 1));
-        while (i < e) {
+        for (; i < e; i += 1) {
             tab[c][x] = str[i];
             x = x + 1;
-            i = i + 1;
         }
         tab[c][x] = '\0';
     }
-    return (tab);
+    return tab;
+}
+
+char    **my_str_to_word_array(char *str)
+{
+    char **tab;
+    int t = nb_word(str);
+
+    tab = malloc(sizeof(char *) * (t + 1));
+    tab[t - 1] = NULL;
+    if (str[0] == '\0')
+        return (NULL);
+    return (fill_tab(tab, str, t));
 }
 
 char    *fill(char **av)
@@ -196,7 +196,28 @@ int    error_less_line(char *map)
     return (b - 1);
 }
 
-void    main_bsq(char **av)
+int    error_less_colone(char *map)
+{
+    int b = 0;
+    int c = 0;
+    int a = 0;
+
+    for (; map[a] != '\n'; a += 1);
+    a += 1;
+    for (; map[a] != '\n'; a += 1)
+        c += 1;
+    a += 1;
+    for (; map[a]; a += 1) {
+        b = 0;
+        for (; map[a] != '\n'; a += 1)
+            b += 1;
+        if (b != c)
+            return 84;
+    }
+    return 0;
+}
+
+int    main_bsq(char **av)
 {
     int nb_line = height(av);
     int nb_colone = widht(av);
@@ -205,10 +226,11 @@ void    main_bsq(char **av)
     int a = 0;
     int b = 0;
     square_t square;
-    int error = error_less_line(map);
+    int error_line = error_less_line(map);
+    int error_colone = error_less_colone(map);
 
-    if (error != nb_line)
-        exit (84);
+    if (error_line != nb_line || error_colone == 84)
+        return (84);
     square.size = 0;
     for (int a = 0; tab[a] != NULL; a += 1)
         my_find_biggest(tab, &square, a);
@@ -218,16 +240,20 @@ void    main_bsq(char **av)
         free(tab[z]);
     free(tab);
     free(map);
+    return 0;
 }
 
 int    main(int ac, char **av)
 {
     int fd = open(av[1], O_RDONLY);
     struct stat size_buff;
+    int error;
 
     stat(av[1], &size_buff);
     if (fd == -1 || size_buff.st_size == 0 || ac != 2)
         return 84;
-    main_bsq(av);
+    error = main_bsq(av);
+    if (error == 84)
+        return 84;
     return (0);
 }
