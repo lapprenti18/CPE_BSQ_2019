@@ -18,7 +18,7 @@ char    *my_strcapitalize(char *str)
         if (str[i] <= 'Z' && str[i] >= 'A')
             str[i] = str[i] + 32;
         if (str[i] > 'z' || str[i] < 'a') {
-            if (str[i+1] >= 'a' && str[i+1] <= 122) {
+            if (str[i+1] >= 'a' && str[i + 1] <= 122) {
                 i++;
                 str[i] = str[i] - 32;
             }

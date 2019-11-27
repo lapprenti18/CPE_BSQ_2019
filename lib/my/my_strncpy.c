@@ -5,8 +5,8 @@
 ** ok
 */
 
-char    *my_strncpy(char *dest, char const *src, int n){
-
+char    *my_strncpy(char *dest, char const *src, int n)
+{
     for (int i = 0; i != n; i++){
         dest[i] = src[i];
     }

@@ -23,7 +23,6 @@ int widht(char **av);
 
 char    *fill(char **av);
 
-
 void my_find_biggest(char **tab, square_t *square, int cursor);
 
 char **my_print_square(square_t square, char **tab);

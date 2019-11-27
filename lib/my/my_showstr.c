@@ -9,12 +9,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int    my_putchar (char c)
+int    my_putchar(char c)
 {
     write (1, &c, 1);
 }
 
-int    affichage (int b)
+int    affichage(int b)
 {
     if (b < 10)
         my_putchar(b);
