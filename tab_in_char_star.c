@@ -1,7 +1,7 @@
 /*
 ** EPITECH PROJECT, 2019
 ** CPE_BSQ_2019
-** File description:
+** File description
 ** tab_in_char_*.c
 */
 
