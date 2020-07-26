@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** CPE_BSQ_2019
 ** File description:
-** error_less_line.c
+** error_les_line.c
 */
 
 #include "include/my.h"
